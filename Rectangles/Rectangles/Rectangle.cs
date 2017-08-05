@@ -11,6 +11,8 @@
 namespace Rectangles
 {
     using System;
+    using System.Collections.Generic;
+    using System.Windows.Forms.DataVisualization.Charting;
 
     /// <summary>
     /// The rectangle entity.
@@ -38,6 +40,16 @@ namespace Rectangles
         private int[] bottomRightPoint;
 
         /// <summary>
+        /// Represents the height of the rectangle.
+        /// </summary>
+        private int height;
+
+        /// <summary>
+        /// Represents the length of the rectangle.
+        /// </summary>
+        private int length;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> class.
         /// </summary>
         /// <param name="x">The x-axis coordinate of the rectangle's top left point.</param>
@@ -51,15 +63,46 @@ namespace Rectangles
                 throw new ArgumentException(@"The height of the rectangle must be greater than 0.", nameof(height));
             }
 
+            this.height = height;
+
             if (length <= 0)
             {
                 throw new ArgumentException(@"The length of the rectangle must be greater than 0.", nameof(length));
             }
 
+            this.length = length;
             this.topLeftPoint = new[] { x, y };
             this.topRightPoint = new[] { x + length, y };
             this.bottomLeftPoint = new[] { x, y + height };
             this.bottomRightPoint = new[] { x + length, y + height };
+        }
+
+        /// <summary>
+        /// The coordinates.
+        /// </summary>
+        private enum Coordinates
+        {
+            /// <summary>
+            /// The x-axis coordinate.
+            /// </summary>
+            X,
+
+            /// <summary>
+            /// the y-axis coordinate.
+            /// </summary>
+            Y
+        }
+
+        public IEnumerable<DataPoint> GetDataPoints()
+        {
+            List<DataPoint> points = new List<DataPoint>
+            {
+                new DataPoint(this.topLeftPoint[(int)Coordinates.X], this.topLeftPoint[(int)Coordinates.Y]),
+                new DataPoint(this.topRightPoint[(int)Coordinates.X], this.topRightPoint[(int)Coordinates.Y]),
+                new DataPoint(this.bottomLeftPoint[(int)Coordinates.X], this.bottomLeftPoint[(int)Coordinates.Y]),
+                new DataPoint(this.bottomRightPoint[(int)Coordinates.X], this.bottomRightPoint[(int)Coordinates.Y])
+            };
+            return points;
         }
     }
 }
