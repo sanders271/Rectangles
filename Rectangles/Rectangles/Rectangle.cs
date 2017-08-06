@@ -73,8 +73,8 @@ namespace Rectangles
             this.length = length;
             this.topLeftPoint = new[] { x, y };
             this.topRightPoint = new[] { x + length, y };
-            this.bottomLeftPoint = new[] { x, y + height };
-            this.bottomRightPoint = new[] { x + length, y + height };
+            this.bottomLeftPoint = new[] { x, y - height };
+            this.bottomRightPoint = new[] { x + length, y - height };
         }
 
         /// <summary>
@@ -103,6 +103,41 @@ namespace Rectangles
                 new DataPoint(this.bottomRightPoint[(int)Coordinates.X], this.bottomRightPoint[(int)Coordinates.Y])
             };
             return points;
+        }
+
+        /// <summary>
+        /// Determines if this rectangles intersects the given rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to check intersection with.</param>
+        /// <returns>A value indicating whether or not the rectangles intersect.</returns>
+        public bool Intersects(Rectangle rectangle)
+        {
+            if (this.topLeftPoint[(int)Coordinates.X] > rectangle.bottomRightPoint[(int)Coordinates.X]
+                || rectangle.topLeftPoint[(int)Coordinates.X] > this.bottomRightPoint[(int)Coordinates.X])
+            {
+                return false;
+            }
+
+            if (this.topLeftPoint[(int)Coordinates.Y] < rectangle.bottomRightPoint[(int)Coordinates.Y]
+                || rectangle.topLeftPoint[(int)Coordinates.Y] < this.bottomRightPoint[(int)Coordinates.Y])
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Contains(Rectangle rectangle)
+        {
+            if (((rectangle.topLeftPoint[(int)Coordinates.X] + rectangle.length) < (this.topLeftPoint[(int)Coordinates.X] + this.length))
+                && (rectangle.topLeftPoint[(int)Coordinates.X] >= this.topLeftPoint[(int)Coordinates.X])
+                && (rectangle.topLeftPoint[(int)Coordinates.Y] <= this.topLeftPoint[(int)Coordinates.Y])
+                && ((rectangle.topLeftPoint[(int)Coordinates.Y] + rectangle.height) < (this.topLeftPoint[(int)Coordinates.Y] + this.height)))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

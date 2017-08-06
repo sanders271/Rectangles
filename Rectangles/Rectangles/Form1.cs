@@ -48,7 +48,7 @@ namespace Rectangles
             // Configure X Axis
             this.chart1.ChartAreas[0].AxisX.Crossing = 0;
             this.chart1.ChartAreas[0].AxisX.Interval = 1;
-            this.chart1.ChartAreas[0].AxisX.LabelStyle.Enabled = false;
+            this.chart1.ChartAreas[0].AxisX.LabelStyle.Enabled = true;
             this.chart1.ChartAreas[0].AxisX.LineWidth = 2;
             this.chart1.ChartAreas[0].AxisX.ArrowStyle = AxisArrowStyle.Lines;
 
@@ -56,7 +56,7 @@ namespace Rectangles
             this.chart1.ChartAreas[0].AxisY.Crossing = 0;
             this.chart1.ChartAreas[0].AxisY.Interval = 1;
             this.chart1.ChartAreas[0].AxisY.LineWidth = 2;
-            this.chart1.ChartAreas[0].AxisY.LabelStyle.Enabled = false;
+            this.chart1.ChartAreas[0].AxisY.LabelStyle.Enabled = true;
             this.chart1.ChartAreas[0].AxisY.ArrowStyle = AxisArrowStyle.Lines;
 
             // Set Chart Type
@@ -88,7 +88,30 @@ namespace Rectangles
                 this.chart1.Series[0].Points.Add(dataPoint);
             }
 
-            this.chart1.Invalidate();            
+            this.ContainmentLabel.Visible = false;
+            this.IntersectionLabel.Visible = false;
+            bool contains = this.rectangle1.Contains(this.rectangle2);
+            if (contains)
+            {
+                this.ContainmentLabel.Text = @"Rectangle 1 contains rectangle 2";
+                this.ContainmentLabel.Visible = true;
+            }
+            else if (this.rectangle2.Contains(this.rectangle1))
+            {
+                this.ContainmentLabel.Text = @"Rectangle 2 contains rectangle 1";
+                this.ContainmentLabel.Visible = true;
+            }
+            else
+            {                
+                bool value = this.rectangle1.Intersects(this.rectangle2);
+                if (value)
+                {
+                    this.IntersectionLabel.Text = @"Rectangle 1 intersect rectangle 2";
+                    this.IntersectionLabel.Visible = true;
+                }
+            }            
+
+            this.chart1.Invalidate();      
         }
 
         /// <summary>
