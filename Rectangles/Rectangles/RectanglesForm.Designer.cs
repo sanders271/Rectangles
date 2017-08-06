@@ -1,6 +1,6 @@
 ﻿namespace Rectangles
 {
-    partial class Form1
+    partial class RectanglesForm
     {
         /// <summary>
         /// Required designer variable.

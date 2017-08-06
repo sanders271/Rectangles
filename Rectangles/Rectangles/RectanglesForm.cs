@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Form1.cs" company="Aston Inc.">
+// <copyright file="RectanglesForm.cs" company="Aston Inc.">
 //   Copyright (c) 2017 All Rights Reserved
 // </copyright>
 // <author>Aston Sanders</author>
@@ -19,7 +19,7 @@ namespace Rectangles
     /// <summary>
     /// The form 1.
     /// </summary>
-    public partial class Form1 : Form
+    public partial class RectanglesForm : Form
     {
         /// <summary>
         /// The first rectangle to analyze.
@@ -32,9 +32,9 @@ namespace Rectangles
         private Rectangle rectangle2;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Form1"/> class.
+        /// Initializes a new instance of the <see cref="RectanglesForm"/> class.
         /// </summary>
-        public Form1()
+        public RectanglesForm()
         {
             this.InitializeComponent();
 
