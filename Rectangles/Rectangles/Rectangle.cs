@@ -109,30 +109,87 @@ namespace Rectangles
         /// Determines if this rectangles intersects the given rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle to check intersection with.</param>
-        /// <returns>A value indicating whether or not the rectangles intersect.</returns>
-        public bool Intersects(Rectangle rectangle)
+        /// <returns>The intersection point rectangle or null if there are no intersections.</returns>
+        public string Intersects(Rectangle rectangle)
         {
             if (this.topLeftPoint[(int)Coordinates.X] > rectangle.bottomRightPoint[(int)Coordinates.X]
                 || rectangle.topLeftPoint[(int)Coordinates.X] > this.bottomRightPoint[(int)Coordinates.X])
             {
-                return false;
+                return null;
             }
 
             if (this.topLeftPoint[(int)Coordinates.Y] < rectangle.bottomRightPoint[(int)Coordinates.Y]
                 || rectangle.topLeftPoint[(int)Coordinates.Y] < this.bottomRightPoint[(int)Coordinates.Y])
             {
-                return false;
+                return null;
             }
 
-            return true;
+            int x5 = Math.Max(this.bottomLeftPoint[(int)Coordinates.X], rectangle.bottomLeftPoint[(int)Coordinates.X]);
+            int y5 = Math.Max(this.bottomLeftPoint[(int)Coordinates.Y], rectangle.bottomLeftPoint[(int)Coordinates.Y]);
+            int x6 = Math.Min(this.topRightPoint[(int)Coordinates.X], rectangle.topRightPoint[(int)Coordinates.X]);
+            int y6 = Math.Min(this.topRightPoint[(int)Coordinates.Y], rectangle.topRightPoint[(int)Coordinates.Y]);
+
+            return "Intersection points: (" + x5 + "," + y5 + "), (" + x6 + "," + y6 + ")";
         }
 
         public bool Contains(Rectangle rectangle)
         {
-            if (((rectangle.topLeftPoint[(int)Coordinates.X] + rectangle.length) < (this.topLeftPoint[(int)Coordinates.X] + this.length))
-                && (rectangle.topLeftPoint[(int)Coordinates.X] >= this.topLeftPoint[(int)Coordinates.X])
-                && (rectangle.topLeftPoint[(int)Coordinates.Y] <= this.topLeftPoint[(int)Coordinates.Y])
-                && ((rectangle.topLeftPoint[(int)Coordinates.Y] + rectangle.height) < (this.topLeftPoint[(int)Coordinates.Y] + this.height)))
+            return rectangle.topLeftPoint[(int)Coordinates.X] > this.topLeftPoint[(int)Coordinates.X]
+                   && rectangle.topLeftPoint[(int)Coordinates.Y] < this.topLeftPoint[(int)Coordinates.Y]
+                   && rectangle.bottomRightPoint[(int)Coordinates.X] < this.bottomRightPoint[(int)Coordinates.X]
+                   && rectangle.bottomRightPoint[(int)Coordinates.Y] > this.bottomRightPoint[(int)Coordinates.Y];
+        }
+
+        public bool IsAdjacentTo(Rectangle rectangle)
+        {
+            // Top to top adjacency
+            if (this.topLeftPoint[(int)Coordinates.Y] == rectangle.topLeftPoint[(int)Coordinates.Y]
+                && this.topLeftPoint[(int)Coordinates.X] <= rectangle.topLeftPoint[(int)Coordinates.X]
+                && this.topRightPoint[(int)Coordinates.X] >= rectangle.topRightPoint[(int)Coordinates.X]
+                && rectangle.bottomRightPoint[(int)Coordinates.Y] >= this.bottomRightPoint[(int)Coordinates.Y])
+            {
+                return true;
+            }
+
+            // Top to bottom adjacency
+            if (this.topLeftPoint[(int)Coordinates.Y] == rectangle.bottomLeftPoint[(int)Coordinates.Y]
+                && rectangle.bottomRightPoint[(int)Coordinates.X] >= this.topLeftPoint[(int)Coordinates.X]
+                && rectangle.bottomLeftPoint[(int)Coordinates.X] <= this.topRightPoint[(int)Coordinates.X])
+            {
+                return true;
+            }
+
+            // Left to left adjacency
+            if (this.topLeftPoint[(int)Coordinates.X] == rectangle.topLeftPoint[(int)Coordinates.X]
+                && this.topLeftPoint[(int)Coordinates.Y] >= rectangle.topLeftPoint[(int)Coordinates.Y]
+                && this.bottomLeftPoint[(int)Coordinates.Y] <= rectangle.bottomLeftPoint[(int)Coordinates.Y]
+                && rectangle.bottomRightPoint[(int)Coordinates.X] <= this.bottomRightPoint[(int)Coordinates.X])
+            {
+                return true;
+            }
+
+            // Left to right adjacency
+            if (this.topLeftPoint[(int)Coordinates.X] == rectangle.topRightPoint[(int)Coordinates.X]
+                && rectangle.bottomRightPoint[(int)Coordinates.Y] <= this.topLeftPoint[(int)Coordinates.Y]
+                && rectangle.topRightPoint[(int)Coordinates.Y] >= this.bottomLeftPoint[(int)Coordinates.Y])
+            {
+                return true;
+            }
+
+            // Right to right adjacency
+            if (this.topRightPoint[(int)Coordinates.X] == rectangle.topRightPoint[(int)Coordinates.X]
+                && this.bottomRightPoint[(int)Coordinates.Y] <= rectangle.bottomRightPoint[(int)Coordinates.Y]
+                && this.topRightPoint[(int)Coordinates.Y] >= rectangle.topRightPoint[(int)Coordinates.Y]
+                && rectangle.bottomLeftPoint[(int)Coordinates.X] >= this.bottomLeftPoint[(int)Coordinates.X])
+            {
+                return true;
+            }
+
+            // Bottom to bottom adjacency
+            if (this.bottomLeftPoint[(int)Coordinates.Y] == rectangle.bottomLeftPoint[(int)Coordinates.Y]
+                && this.bottomLeftPoint[(int)Coordinates.X] <= rectangle.bottomRightPoint[(int)Coordinates.X]
+                && this.bottomRightPoint[(int)Coordinates.X] >= rectangle.bottomRightPoint[(int)Coordinates.X]
+                && rectangle.topRightPoint[(int)Coordinates.Y] <= this.topRightPoint[(int)Coordinates.Y])
             {
                 return true;
             }

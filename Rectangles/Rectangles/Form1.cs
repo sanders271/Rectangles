@@ -90,8 +90,8 @@ namespace Rectangles
 
             this.ContainmentLabel.Visible = false;
             this.IntersectionLabel.Visible = false;
-            bool contains = this.rectangle1.Contains(this.rectangle2);
-            if (contains)
+            this.AdjacencyLabel.Visible = false;
+            if (this.rectangle1.Contains(this.rectangle2))
             {
                 this.ContainmentLabel.Text = @"Rectangle 1 contains rectangle 2";
                 this.ContainmentLabel.Visible = true;
@@ -102,13 +102,22 @@ namespace Rectangles
                 this.ContainmentLabel.Visible = true;
             }
             else
-            {                
-                bool value = this.rectangle1.Intersects(this.rectangle2);
-                if (value)
+            {
+                if (this.rectangle1.IsAdjacentTo(this.rectangle2) || this.rectangle2.IsAdjacentTo(this.rectangle1))
                 {
-                    this.IntersectionLabel.Text = @"Rectangle 1 intersect rectangle 2";
-                    this.IntersectionLabel.Visible = true;
+                    this.AdjacencyLabel.Text = @"The rectangles are adjacent to each other";
+                    this.AdjacencyLabel.Visible = true;
                 }
+                else
+                {
+                    string intersections = this.rectangle1.Intersects(this.rectangle2);
+                    if (!string.IsNullOrEmpty(intersections))
+                    {
+                        this.IntersectionLabel.Text = @"Rectangle 1 intersect rectangle 2 ";
+                        this.IntersectionLabel.Text += intersections;
+                        this.IntersectionLabel.Visible = true;
+                    }
+                }                
             }            
 
             this.chart1.Invalidate();      
