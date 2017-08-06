@@ -12,6 +12,7 @@ namespace Rectangles
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using System.Windows.Forms.DataVisualization.Charting;
 
     /// <summary>
@@ -115,13 +116,42 @@ namespace Rectangles
                 return null;
             }
 
-            int x5 = Math.Max(this.bottomLeftPoint[(int)Coordinates.X], rectangle.bottomLeftPoint[(int)Coordinates.X]);
-            int y5 = Math.Max(this.bottomLeftPoint[(int)Coordinates.Y], rectangle.bottomLeftPoint[(int)Coordinates.Y]);
-            int x6 = Math.Min(this.topRightPoint[(int)Coordinates.X], rectangle.topRightPoint[(int)Coordinates.X]);
-            int y6 = Math.Min(this.topRightPoint[(int)Coordinates.Y], rectangle.topRightPoint[(int)Coordinates.Y]);
+            int x2 = Math.Max(this.bottomLeftPoint[(int)Coordinates.X], rectangle.bottomLeftPoint[(int)Coordinates.X]);
+            int y2 = Math.Max(this.bottomLeftPoint[(int)Coordinates.Y], rectangle.bottomLeftPoint[(int)Coordinates.Y]);
+            int x3 = Math.Min(this.topRightPoint[(int)Coordinates.X], rectangle.topRightPoint[(int)Coordinates.X]);
+            int y3 = Math.Min(this.topRightPoint[(int)Coordinates.Y], rectangle.topRightPoint[(int)Coordinates.Y]);
+            int x = x2;
+            int y = y3;
+            int x4 = x3;
+            int y4 = y2;
 
-            return "Intersection points: (" + x5 + "," + y5 + "), (" + x6 + "," + y6 + ")";
-        }
+            List<int> xValues = GetXValues(rectangle);
+            List<int> yValues = GetYValues(rectangle);
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Intersection points: ");
+            if ((xValues.Contains(x) || yValues.Contains(y)) && !IsDataPoint(rectangle, x, y))
+            {
+                sb.Append("(").Append(x).Append(",").Append(y).AppendLine(")");
+            }
+
+            if ((xValues.Contains(x2) || yValues.Contains(y2)) && !IsDataPoint(rectangle, x2, y2))
+            {
+                sb.Append("(").Append(x2).Append(",").Append(y2).AppendLine(")");
+            }
+
+            if ((xValues.Contains(x3) || yValues.Contains(y3)) && !IsDataPoint(rectangle, x3, y3))
+            {
+                sb.Append("(").Append(x3).Append(",").Append(y3).AppendLine(")");
+            }
+
+            if ((xValues.Contains(x4) || yValues.Contains(y4)) && !IsDataPoint(rectangle, x4, y4))
+            {
+                sb.Append("(").Append(x4).Append(",").Append(y4).AppendLine(")");
+            }
+
+            return sb.ToString();
+        }        
 
         /// <summary>
         /// Checks to see if the given rectangle is completely contained within this rectangle.
@@ -191,6 +221,70 @@ namespace Rectangles
                 && this.bottomLeftPoint[(int)Coordinates.X] <= rectangle.bottomRightPoint[(int)Coordinates.X]
                 && this.bottomRightPoint[(int)Coordinates.X] >= rectangle.bottomRightPoint[(int)Coordinates.X]
                 && rectangle.topRightPoint[(int)Coordinates.Y] <= this.topRightPoint[(int)Coordinates.Y])
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the unique x-axis values for the given rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to get the x-axis values from.</param>
+        /// <returns>The list of x-axis coordinates.</returns>
+        private static List<int> GetXValues(Rectangle rectangle)
+        {
+            List<int> values = new List<int>
+                                   {
+                                       rectangle.topLeftPoint[(int)Coordinates.X],
+                                       rectangle.bottomRightPoint[(int)Coordinates.X]
+                                   };
+
+            return values;
+        }
+
+        /// <summary>
+        /// Gets the unique y-axis values for the given rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to get the y-axis values from.</param>
+        /// <returns>The list of y-axis coordinates.</returns>
+        private static List<int> GetYValues(Rectangle rectangle)
+        {
+            List<int> values = new List<int>
+                                   {
+                                       rectangle.topLeftPoint[(int)Coordinates.Y],
+                                       rectangle.bottomLeftPoint[(int)Coordinates.Y]
+                                   };
+
+            return values;
+        }
+
+        /// <summary>
+        /// Determines if the given x and y coordinates are an existing corner point of the given rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to check.</param>
+        /// <param name="x">The x-axis coordinate.</param>
+        /// <param name="y">The y-axis coordinate.</param>
+        /// <returns>A value indicating if the given point is a corner of the given rectangle.</returns>
+        private static bool IsDataPoint(Rectangle rectangle, int x, int y)
+        {
+            if (rectangle.topLeftPoint[(int)Coordinates.X] == x && rectangle.topLeftPoint[(int)Coordinates.Y] == y)
+            {
+                return true;
+            }
+
+            if (rectangle.topRightPoint[(int)Coordinates.X] == x && rectangle.topRightPoint[(int)Coordinates.Y] == y)
+            {
+                return true;
+            }
+
+            if (rectangle.bottomLeftPoint[(int)Coordinates.X] == x && rectangle.bottomLeftPoint[(int)Coordinates.Y] == y)
+            {
+                return true;
+            }
+
+            if (rectangle.bottomRightPoint[(int)Coordinates.X] == x && rectangle.bottomRightPoint[(int)Coordinates.Y] == y)
             {
                 return true;
             }
