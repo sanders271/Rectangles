@@ -22,32 +22,22 @@ namespace Rectangles
         /// <summary>
         /// Represents the coordinate pair of the rectangle's top left point.
         /// </summary>
-        private int[] topLeftPoint;
+        private readonly int[] topLeftPoint;
 
         /// <summary>
         /// Represents the coordinate pair of the rectangle's top right point.
         /// </summary>
-        private int[] topRightPoint;
+        private readonly int[] topRightPoint;
 
         /// <summary>
         /// Represents the coordinate pair of the rectangle's bottom left point.
         /// </summary>
-        private int[] bottomLeftPoint;
+        private readonly int[] bottomLeftPoint;
 
         /// <summary>
         /// Represents the coordinate pair of the rectangle's bottom right point.
         /// </summary>
-        private int[] bottomRightPoint;
-
-        /// <summary>
-        /// Represents the height of the rectangle.
-        /// </summary>
-        private int height;
-
-        /// <summary>
-        /// Represents the length of the rectangle.
-        /// </summary>
-        private int length;
+        private readonly int[] bottomRightPoint;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> class.
@@ -63,14 +53,11 @@ namespace Rectangles
                 throw new ArgumentException(@"The height of the rectangle must be greater than 0.", nameof(height));
             }
 
-            this.height = height;
-
             if (length <= 0)
             {
                 throw new ArgumentException(@"The length of the rectangle must be greater than 0.", nameof(length));
             }
 
-            this.length = length;
             this.topLeftPoint = new[] { x, y };
             this.topRightPoint = new[] { x + length, y };
             this.bottomLeftPoint = new[] { x, y - height };
@@ -93,6 +80,10 @@ namespace Rectangles
             Y
         }
 
+        /// <summary>
+        /// Gets the data points to for the four corners of the rectangle.
+        /// </summary>
+        /// <returns>A list of data points.</returns>
         public IEnumerable<DataPoint> GetDataPoints()
         {
             List<DataPoint> points = new List<DataPoint>
@@ -132,6 +123,11 @@ namespace Rectangles
             return "Intersection points: (" + x5 + "," + y5 + "), (" + x6 + "," + y6 + ")";
         }
 
+        /// <summary>
+        /// Checks to see if the given rectangle is completely contained within this rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to check.</param>
+        /// <returns>A value indicating whether or not the given rectangle is contained within this rectangle.</returns>
         public bool Contains(Rectangle rectangle)
         {
             return rectangle.topLeftPoint[(int)Coordinates.X] > this.topLeftPoint[(int)Coordinates.X]
@@ -140,6 +136,11 @@ namespace Rectangles
                    && rectangle.bottomRightPoint[(int)Coordinates.Y] > this.bottomRightPoint[(int)Coordinates.Y];
         }
 
+        /// <summary>
+        /// Determines if this rectangle is adjacent to the given rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to check for adjacency.</param>
+        /// <returns>A value indicating whether or not this rectangle is adjacent to the given rectangle.</returns>
         public bool IsAdjacentTo(Rectangle rectangle)
         {
             // Top to top adjacency
